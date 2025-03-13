@@ -146,7 +146,7 @@ export const creatorRegister = async (
   params: IPostCreatorRegisterRequest
 ): Promise<IPostCreatorRegisterResponse> => {
   try {
-    const response = await axiosInstance.post("/creator/add", params);
+    const response = await axiosInstance.post("/auth/creator/add", params);
     return response?.data;
   } catch (error: unknown) {
     const errorMessage = getErrorMessage(error);

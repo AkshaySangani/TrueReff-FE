@@ -122,12 +122,12 @@ export interface IPostVendorRegisterRequest {
 export interface IPostCreatorRegisterRequest {
   full_name: string;
   user_name: string;
-  email: string;
-  phone_number: string;
-  profile_title: string;
+  // email: string;
+  phone: string;
+  title: string;
   long_description: string;
   short_description: string;
-  tags: string;
+  tags: string[];
   category: string;
   sub_category: string;
   profile_image: string;
@@ -164,23 +164,23 @@ export interface IPostCreatorRegisterResponse {
 }
 
 export interface IGetCategoryParams {
-  page?: string | number,
-  limit?: string | number
+  page?: string | number;
+  limit?: string | number;
 }
 
 export interface ICategoryData {
-    _id: string,
-    name: string,
-    parentId: string,
-    createdAt: string,
-    updatedAt: string
+  _id: string;
+  name: string;
+  parentId: string;
+  createdAt: string;
+  updatedAt: string;
 }
 export interface IGetCategoryResponse {
   status: number;
-  message: string,
+  message: string;
   data: {
-    data: ICategoryData[],
-    count: number
+    data: ICategoryData[];
+    count: number;
   };
-  error: string
+  error: string;
 }

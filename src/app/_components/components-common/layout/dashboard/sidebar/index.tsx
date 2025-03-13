@@ -25,6 +25,8 @@ import { getProfileAPI } from "@/lib/web-api/user";
 import { getServerSession } from "next-auth";
 import authOptions from "@/lib/config/authOptions";
 import { useAuthStore } from "@/lib/store/auth";
+import { USER_TYPE } from "@/lib/utils/constants";
+import { useSession } from "next-auth/react";
 
 type MenuItem = {
   label: string;
@@ -98,7 +100,8 @@ interface ISidebarProps {
 }
 const Sidebar = ({ expanded, handleExpandSidebar }: ISidebarProps) => {
   const pathname = usePathname(); // Get the current path
-  const account = useAuthStore(s => s.account);
+  const account: any = useAuthStore((s) => s.account);
+  const session = useSession();
   const [expandedMenus, setExpandedMenus] = useState<Record<string, boolean>>(
     {}
   );
@@ -180,11 +183,16 @@ const Sidebar = ({ expanded, handleExpandSidebar }: ISidebarProps) => {
     // { label: translate("Support"), icon: LifeBuoy, link: "/support" },
     // { label: translate("Settings"), icon: Settings, link: "/settings" },
   ];
-  
-  const menu = {
+
+  console.log("account", session);
+
+  const menus = {
     vendor: menuItems,
     creator: creatorMenuItem,
-  }[account?.role];
+  };
+  const menu: MenuItem[] = Object.keys(menus).includes(account?.type)
+    ? menus[account?.type]
+    : menus.vendor;
   const handleToggleMenu = () => {
     let keys = Object.keys(expandedMenus).filter(
       (key) => expandedMenus[key] === true

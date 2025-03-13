@@ -64,21 +64,21 @@ interface IProps {
 }
 export default function CreatorRegistrationPage({ profile }: IProps) {
   const searchParams = useSearchParams();
-  const email = searchParams.get("email")??"";
+  const email = searchParams.get("email") ?? "";
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const axios = useAxiosAuth();
   const [activeTab, setActiveTab] = useState<number>(TABS_STATUS.BASIC_DETAILS);
   const methods = useForm<ICreatorOnBoardingSchema>({
     defaultValues: {
-      full_name: "",
-      user_name: "",
+      full_name: "YASH",
+      user_name: "yash_creators",
       email: email,
-      phone_number: "",
-      profile_title: "",
-      short_description: "",
-      long_description: "",
-      tags: "",
+      phone_number: "+9848784545787",
+      profile_title: "The Creator",
+      short_description: "SHORT DESCRIPTIONS",
+      long_description: "LONG DESCRIPTIONS",
+      tags: ["YASH"],
       category: "",
       sub_category: "",
       profile_image: null,
@@ -95,18 +95,24 @@ export default function CreatorRegistrationPage({ profile }: IProps) {
     try {
       const payload: IPostCreatorRegisterRequest = {
         full_name: data.full_name,
-        email: data.email,
-        phone_number: data.phone_number,
+        // email: data.email,
+        phone: data.phone_number,
         user_name: data.user_name,
-        profile_title: data.profile_title,
+        title: data.profile_title,
         long_description: data.long_description,
         short_description: data.short_description,
         category: data.category,
         sub_category: data.sub_category,
-        tags: data.tags,
-        banner_image: data.banner_image || "",
-        profile_image: data.profile_image || "",
+        tags: data.tags || [],
       };
+
+      if (data.banner_image) {
+        payload.banner_image = data.banner_image;
+      }
+      if (data.profile_image) {
+        payload.profile_image = data.profile_image;
+      }
+
       const response: IPostCreatorRegisterResponse = await creatorRegister(
         payload
       );
@@ -134,6 +140,8 @@ export default function CreatorRegistrationPage({ profile }: IProps) {
     }
     setLoading(false);
   };
+
+  console.log("methods-errors", methods.formState.errors);
 
   return (
     <div className="max-w-[960px] w-full mx-auto lg:px-0 md:px-4 px-2 md:pt-10 pt-5 h-screen overflow-hidden flex flex-col">

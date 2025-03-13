@@ -5,32 +5,31 @@ import { translate } from "@/lib/utils/translate";
 import { Button } from "@/components/ui/button";
 import { getCategories } from "@/lib/web-api/auth";
 export interface ICategoryData {
-  _id: string,
-  name: string,
-  parentId: string,
-  createdAt: string,
-  updatedAt: string
+  _id: string;
+  name: string;
+  parentId: string;
+  createdAt: string;
+  updatedAt: string;
 }
 export default function ProfileSetup() {
-  const [categories,setCategories] = useState<ICategoryData[]>([]);
-  const [parentCategory,setParentCategory] = useState<ICategoryData[]>([]);
-  const [subCategory,setSubCategory] = useState<ICategoryData[]>([]);
-  useEffect(() => {
-    fetchCategory()
-  },[])
-  const fetchCategory = async () => {
-    try{
-      ("use server");
-        const response = await getCategories({page:0,limit: 0});
-        let data = response?.data?.data;
-        setCategories(data);
-        setParentCategory(data?.filter(ele => ele?.parentId === null));
-        setSubCategory(data?.filter(ele => ele?.parentId !== null))
+  const [categories, setCategories] = useState<ICategoryData[]>([]);
+  const [parentCategory, setParentCategory] = useState<ICategoryData[]>([]);
+  const [subCategory, setSubCategory] = useState<ICategoryData[]>([]);
 
-     } catch (error) {
- 
-     }
-  }
+  const fetchCategory = async () => {
+    try {
+      const response = await getCategories({ page: 0, limit: 0 });
+      let data = response?.data?.data;
+      setCategories(data);
+      setParentCategory(data?.filter((ele) => ele?.parentId === null));
+      setSubCategory(data?.filter((ele) => ele?.parentId !== null));
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    fetchCategory();
+  }, []);
+
   return (
     <div className="grid grid-cols-2 gap-4">
       <div className="col-span-2">
@@ -68,7 +67,10 @@ export default function ProfileSetup() {
           placeholder={translate("Select_category")}
           name="category"
           type="select"
-          options={parentCategory?.map(ele => ({value:ele?.name,label:ele?.name}))}
+          options={parentCategory?.map((ele) => ({
+            value: ele?.name,
+            label: ele?.name,
+          }))}
         />
       </div>
       <div className="col-span-1">
@@ -77,7 +79,10 @@ export default function ProfileSetup() {
           placeholder={translate("Select_sub_category")}
           name="sub_category"
           type="select"
-          options={subCategory?.map(ele => ({value:ele?.name,label:ele?.name}))}
+          options={subCategory?.map((ele) => ({
+            value: ele?.name,
+            label: ele?.name,
+          }))}
         />
       </div>
       <div className="bg-white rounded-xl col-span-2 flex flex-col gap-2">
@@ -90,10 +95,14 @@ export default function ProfileSetup() {
                 className="w-[50px] h-[50px]"
               />
             </div>
-            <input type="file" id="profile-image" className="hidden"/>
-            <Button variant="outline" className="w-full" onClick={() => {
-              document.getElementById("profile-image")?.click()
-            }}>
+            <input type="file" id="profile-image" className="hidden" />
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={() => {
+                document.getElementById("profile-image")?.click();
+              }}
+            >
               {translate("Upload_your_photo")}
             </Button>
           </div>
@@ -113,7 +122,7 @@ export default function ProfileSetup() {
                 src="/assets/product/image-square.svg"
                 className="w-[50px] h-[50px]"
               />
-               <input type="file" id="banner_image" className="hidden"/>
+              <input type="file" id="banner_image" className="hidden" />
               <div className="text-[#656466]">
                 {translate("Upload_Documents")}
               </div>

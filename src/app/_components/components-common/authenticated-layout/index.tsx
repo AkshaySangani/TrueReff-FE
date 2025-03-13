@@ -39,15 +39,15 @@ export default function AuthenticatedLayout({
     };
 
     fetchAccount();
-  }, [session, status, setAccountData]);
+  }, [session, status, setAccountData, loading]);
 
   // ✅ Wait until `loading` is false & account is updated
-  if (loading || !account.email) {
-    return <div>Loading...</div>;
-  }
+  // if (loading || !account.email) {
+  //   return <div>Loading...</div>;
+  // }
 
   // 🚀 Ensure redirection only happens after account data is available
-  if (!account.email) {
+  if (!session) {
     redirect("/register");
     return null;
   }
